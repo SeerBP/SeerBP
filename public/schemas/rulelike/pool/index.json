@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
-  "$id": "https://seerbp.github.io/schemas/rulelike/pool",
+  "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/pool",
   "title": "PetPool Schemas",
   "description": "精灵池相关的 JSON Schema 定义",
   "$ref": "#/$defs/PetPoolObject",
@@ -9,19 +9,13 @@
       "title": "PoolType",
       "description": "PoolType 表示池的类型",
       "type": "string",
-      "enum": [
-        "NONE",
-        "LIMIT",
-        "POINTS"
-      ]
+      "enum": [ "NONE", "LIMIT", "POINTS" ]
     },
     "SubPool": {
       "title": "SubPool",
       "description": "SubPool 表示一个子池，完整的精灵池是由若干个 SubPool 数组构成的",
       "type": "object",
-      "required": [
-        "pets"
-      ],
+      "required": [ "pets" ],
       "properties": {
         "pets": {
           "title": "pets",
@@ -44,9 +38,7 @@
       "title": "PetItem",
       "description": "PetItem 表示一个 SubPool 中的内容",
       "type": "object",
-      "required": [
-        "id"
-      ],
+      "required": [ "id" ],
       "properties": {
         "id": {
           "title": "id",
@@ -83,9 +75,7 @@
       "allOf": [
         {
           "if": {
-            "required": [
-              "type"
-            ],
+            "required": [ "type" ],
             "properties": {
               "type": {
                 "const": "LIMIT"
@@ -94,17 +84,12 @@
           },
           "then": {
             "not": {
-              "required": [
-                "pointsLimit",
-                "allowUnlisted"
-              ]
+              "required": [ "pointsLimit", "allowUnlisted" ]
             },
             "properties": {
               "petPool": {
                 "items": {
-                  "required": [
-                    "count"
-                  ],
+                  "required": [ "count" ],
                   "properties": {
                     "count": {
                       "minimum": 0
@@ -117,9 +102,7 @@
         },
         {
           "if": {
-            "required": [
-              "type"
-            ],
+            "required": [ "type" ],
             "properties": {
               "type": {
                 "const": "POINTS"
@@ -128,19 +111,13 @@
           },
           "then": {
             "not": {
-              "required": [
-                "allowUnlisted"
-              ]
+              "required": [ "allowUnlisted" ]
             },
-            "required": [
-              "pointsLimit"
-            ],
+            "required": [ "pointsLimit" ],
             "properties": {
               "petPool": {
                 "items": {
-                  "required": [
-                    "count"
-                  ]
+                  "required": [ "count" ]
                 }
               }
             }
@@ -148,9 +125,7 @@
         },
         {
           "if": {
-            "required": [
-              "type"
-            ],
+            "required": [ "type" ],
             "properties": {
               "type": {
                 "const": "NONE"
@@ -159,18 +134,13 @@
           },
           "then": {
             "not": {
-              "required": [
-                "pointsLimit",
-                "fallbackCount"
-              ]
+              "required": [ "pointsLimit", "fallbackCount" ]
             },
             "properties": {
               "petPool": {
                 "items": {
                   "not": {
-                    "required": [
-                      "count"
-                    ]
+                    "required": [ "count" ]
                   }
                 }
               }
@@ -178,15 +148,10 @@
           }
         }
       ],
-      "required": [
-        "metadata",
-        "type",
-        "pools",
-        "allowDuplicate"
-      ],
+      "required": [ "metadata", "type", "pools", "allowDuplicate" ],
       "properties": {
         "metadata": {
-          "$ref": "https://seerbp.github.io/schemas/rulelike/shared/metadata"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata"
         },
         "pools": {
           "title": "pools",
@@ -225,19 +190,13 @@
       },
       "additionalProperties": false
     },
-    "https://seerbp.github.io/schemas/rulelike/shared/metadata": {
+    "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata": {
       "$schema": "https://json-schema.org/draft/2020-12/schema#",
-      "$id": "https://seerbp.github.io/schemas/rulelike/shared/metadata",
+      "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata",
       "title": "RuleLikeMetadata",
       "description": "规则类资源的元数据。",
       "type": "object",
-      "required": [
-        "id",
-        "name",
-        "description",
-        "author",
-        "sourceUri"
-      ],
+      "required": [ "id", "name", "description", "author", "sourceUri" ],
       "properties": {
         "id": {
           "$ref": "#/$defs/Id"
@@ -285,10 +244,7 @@
           "title": "author",
           "description": "规则作者信息",
           "type": "object",
-          "required": [
-            "name",
-            "link"
-          ],
+          "required": [ "name", "link" ],
           "properties": {
             "name": {
               "title": "name",

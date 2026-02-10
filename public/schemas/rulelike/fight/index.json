@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
-  "$id": "https://seerbp.github.io/schemas/rulelike/fight",
+  "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/fight",
   "$ref": "#/$defs/FightObject",
   "$defs": {
     "ItemId": {
@@ -25,10 +25,7 @@
       "title": "ItemLimitRule",
       "description": "道具限制规则",
       "type": "object",
-      "required": [
-        "itemIds",
-        "count"
-      ],
+      "required": [ "itemIds", "count" ],
       "properties": {
         "itemIds": {
           "title": "itemId",
@@ -47,14 +44,10 @@
       "title": "FightObject",
       "description": "对战规则对象",
       "type": "object",
-      "required": [
-        "metadata",
-        "roundLimit",
-        "itemLimit"
-      ],
+      "required": [ "metadata", "roundLimit", "itemLimit" ],
       "properties": {
         "metadata": {
-          "$ref": "https://seerbp.github.io/schemas/rulelike/shared/metadata"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata"
         },
         "roundLimit": {
           "$ref": "#/$defs/RoundLimit"
@@ -69,19 +62,13 @@
         }
       }
     },
-    "https://seerbp.github.io/schemas/rulelike/shared/metadata": {
+    "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata": {
       "$schema": "https://json-schema.org/draft/2020-12/schema#",
-      "$id": "https://seerbp.github.io/schemas/rulelike/shared/metadata",
+      "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata",
       "title": "RuleLikeMetadata",
       "description": "规则类资源的元数据。",
       "type": "object",
-      "required": [
-        "id",
-        "name",
-        "description",
-        "author",
-        "sourceUri"
-      ],
+      "required": [ "id", "name", "description", "author", "sourceUri" ],
       "properties": {
         "id": {
           "$ref": "#/$defs/Id"
@@ -129,10 +116,7 @@
           "title": "author",
           "description": "规则作者信息",
           "type": "object",
-          "required": [
-            "name",
-            "link"
-          ],
+          "required": [ "name", "link" ],
           "properties": {
             "name": {
               "title": "name",

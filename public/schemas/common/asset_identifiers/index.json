@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
-  "$id": "https://seerbp.github.io/schemas/common/asset_identifiers",
+  "$id": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers",
   "title": "Asset Identifiers Schemas",
   "description": "各种资产 ID 的 JSON Schema 定义",
   "$defs": {

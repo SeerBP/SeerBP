@@ -1,16 +1,10 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
-  "$id": "https://seerbp.github.io/schemas/rulelike/shared/metadata",
+  "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/shared/metadata",
   "title": "RuleLikeMetadata",
   "description": "规则类资源的元数据。",
   "type": "object",
-  "required": [
-    "id",
-    "name",
-    "description",
-    "author",
-    "sourceUri"
-  ],
+  "required": [ "id", "name", "description", "author", "sourceUri" ],
   "properties": {
     "id": {
       "$ref": "#/$defs/Id"
@@ -58,10 +52,7 @@
       "title": "author",
       "description": "规则作者信息",
       "type": "object",
-      "required": [
-        "name",
-        "link"
-      ],
+      "required": [ "name", "link" ],
       "properties": {
         "name": {
           "title": "name",

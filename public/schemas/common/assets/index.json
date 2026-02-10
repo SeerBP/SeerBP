@@ -1,38 +1,28 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
-  "$id": "https://seerbp.github.io/schemas/common/assets",
+  "$id": "https://seerbp.github.io/SeerBP/schemas/common/assets",
   "title": "Assets Schemas",
   "description": "各种资产的 JSON Schema 定义",
   "$defs": {
     "EquipmentType": {
       "description": "装备类型",
       "type": "string",
-      "enum": [
-        "HEAD",
-        "EYE",
-        "WAYST",
-        "HAND",
-        "FOOT"
-      ]
+      "enum": [ "HEAD", "EYE", "WAYST", "HAND", "FOOT" ]
     },
     "PetData": {
       "description": "精灵数据",
       "type": "object",
-      "required": [
-        "id",
-        "name",
-        "element_type"
-      ],
+      "required": [ "id", "name", "element_type" ],
       "properties": {
         "id": {
-          "$ref": "https://seerbp.github.io/schemas/common/asset_identifiers#/$defs/PetId"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/PetId"
         },
         "name": {
           "description": "精灵名称",
           "type": "string"
         },
         "element_type": {
-          "$ref": "https://seerbp.github.io/schemas/common/asset_identifiers#/$defs/ElementTypeId"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/ElementTypeId"
         }
       },
       "additionalProperties": false
@@ -40,14 +30,10 @@
     "EquipmentData": {
       "description": "装备数据",
       "type": "object",
-      "required": [
-        "id",
-        "name",
-        "type"
-      ],
+      "required": [ "id", "name", "type" ],
       "properties": {
         "id": {
-          "$ref": "https://seerbp.github.io/schemas/common/asset_identifiers#/$defs/EquipId"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/EquipId"
         },
         "name": {
           "description": "装备名称",
@@ -62,14 +48,10 @@
     "TitleData": {
       "description": "称号数据",
       "type": "object",
-      "required": [
-        "id",
-        "name",
-        "description"
-      ],
+      "required": [ "id", "name", "description" ],
       "properties": {
         "id": {
-          "$ref": "https://seerbp.github.io/schemas/common/asset_identifiers#/$defs/TitleId"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/TitleId"
         },
         "name": {
           "description": "称号名称",
@@ -85,14 +67,10 @@
     "SuitData": {
       "description": "套装数据",
       "type": "object",
-      "required": [
-        "id",
-        "name",
-        "description"
-      ],
+      "required": [ "id", "name", "description" ],
       "properties": {
         "id": {
-          "$ref": "https://seerbp.github.io/schemas/common/asset_identifiers#/$defs/SuitId"
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/SuitId"
         },
         "name": {
           "description": "套装名称",
@@ -105,9 +83,9 @@
       },
       "additionalProperties": false
     },
-    "https://seerbp.github.io/schemas/common/asset_identifiers": {
+    "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers": {
       "$schema": "https://json-schema.org/draft/2020-12/schema#",
-      "$id": "https://seerbp.github.io/schemas/common/asset_identifiers",
+      "$id": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers",
       "title": "Asset Identifiers Schemas",
       "description": "各种资产 ID 的 JSON Schema 定义",
       "$defs": {
