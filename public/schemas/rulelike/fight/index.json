@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "$id": "https://seerbp.github.io/schemas/rulelike/fight",
+  "$ref": "#/$defs/FightObject",
+  "$defs": {
+    "ItemId": {
+      "title": "itemId",
+      "description": "道具ID",
+      "type": "integer",
+      "format": "int32"
+    },
+    "ItemLimitCount": {
+      "title": "itemLimitCount",
+      "description": "可使用的数量",
+      "type": "integer",
+      "format": "int32"
+    },
+    "RoundLimit": {
+      "title": "FightRoundLimit",
+      "description": "对战回合限制",
+      "type": "number",
+      "minimum": 5
+    },
+    "ItemLimitRule": {
+      "title": "ItemLimitRule",
+      "description": "道具限制规则",
+      "type": "object",
+      "required": [
+        "itemIds",
+        "count"
+      ],
+      "properties": {
+        "itemIds": {
+          "title": "itemId",
+          "description": "可使用的道具ID",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ItemId"
+          }
+        },
+        "count": {
+          "$ref": "#/$defs/ItemLimitCount"
+        }
+      }
+    },
+    "FightObject": {
+      "title": "FightObject",
+      "description": "对战规则对象",
+      "type": "object",
+      "required": [
+        "metadata",
+        "roundLimit",
+        "itemLimit"
+      ],
+      "properties": {
+        "metadata": {
+          "$ref": "https://seerbp.github.io/schemas/rulelike/shared/metadata"
+        },
+        "roundLimit": {
+          "$ref": "#/$defs/RoundLimit"
+        },
+        "itemLimit": {
+          "title": "itemLimit",
+          "description": "道具限制规则",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ItemLimitRule"
+          }
+        }
+      }
+    },
+    "https://seerbp.github.io/schemas/rulelike/shared/metadata": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema#",
+      "$id": "https://seerbp.github.io/schemas/rulelike/shared/metadata",
+      "title": "RuleLikeMetadata",
+      "description": "规则类资源的元数据。",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "description",
+        "author",
+        "sourceUri"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "title": "name",
+          "description": "名称",
+          "type": "string",
+          "maxLength": 16
+        },
+        "description": {
+          "title": "description",
+          "description": "介绍，可能为 `CommonMark` 格式",
+          "type": "string",
+          "maxLength": 100
+        },
+        "author": {
+          "$ref": "#/$defs/Author"
+        },
+        "tags": {
+          "title": "tags",
+          "description": "规则标签，用于分类和搜索。",
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/Tag"
+          }
+        },
+        "sourceUri": {
+          "title": "source_uri",
+          "description": "规则源代码的可访问 URI。",
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "$defs": {
+        "Id": {
+          "title": "id",
+          "description": "规则 ID，必须为正整数。",
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "format": "int32"
+        },
+        "Author": {
+          "title": "author",
+          "description": "规则作者信息",
+          "type": "object",
+          "required": [
+            "name",
+            "link"
+          ],
+          "properties": {
+            "name": {
+              "title": "name",
+              "description": "作者名称",
+              "type": "string"
+            },
+            "link": {
+              "title": "link",
+              "description": "作者联系方式链接，可以是邮箱、QQ链接，社交媒体主页等。",
+              "type": "string"
+            }
+          }
+        },
+        "Tag": {
+          "title": "tag",
+          "description": "规则标签，用于分类和搜索。",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

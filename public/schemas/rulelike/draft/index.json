@@ -1,0 +1,314 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema#",
+  "$id": "https://seerbp.github.io/schemas/rulelike/draft",
+  "title": "Draft",
+  "description": "征召流程相关的 JSON Schema 定义",
+  "$ref": "#/$defs/DraftObject",
+  "$defs": {
+    "PlayerSide": {
+      "title": "PlayerSide",
+      "description": "执行操作的玩家方。",
+      "type": "string",
+      "enum": [
+        "BLUE",
+        "RED"
+      ]
+    },
+    "ActionType": {
+      "title": "ActionType",
+      "description": "征召操作的类型。",
+      "type": "string",
+      "enum": [
+        "BAN",
+        "PICK"
+      ]
+    },
+    "ActionTarget": {
+      "title": "ActionTarget",
+      "description": "动作的作用目标。",
+      "type": "string",
+      "enum": [
+        "ONLY_SELF",
+        "ONLY_OPPONENT",
+        "BOTH_SIDES"
+      ]
+    },
+    "ActionSource": {
+      "title": "ActionSource",
+      "description": "动作的项目来源。",
+      "type": "string",
+      "enum": [
+        "POOL",
+        "OPPONENT_PICKED"
+      ]
+    },
+    "Visibility": {
+      "title": "Visibility",
+      "description": "动作的可见性策略。",
+      "type": "string",
+      "enum": [
+        "PUBLIC",
+        "HIDDEN",
+        "FLIP"
+      ]
+    },
+    "Modifier": {
+      "title": "Modifier",
+      "description": "动作修饰符，用于改变动作的具体行为。",
+      "type": "string",
+      "enum": [
+        "FIRST",
+        "RANDOM",
+        "PROTECT"
+      ]
+    },
+    "ItemType": {
+      "title": "ItemType",
+      "description": "项目类型。",
+      "type": "string",
+      "enum": [
+        "PET",
+        "SUIT",
+        "TITLE"
+      ]
+    },
+    "DraftAction": {
+      "title": "DraftAction",
+      "description": "单个征召流程操作步骤。",
+      "type": "object",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "actionType": {
+                "const": "PICK"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "options": {
+                "properties": {
+                  "target": {
+                    "default": "ONLY_SELF",
+                    "not": {
+                      "const": "ONLY_OPPONENT"
+                    }
+                  },
+                  "source": {
+                    "default": "POOL",
+                    "const": "POOL"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "actionType": {
+                "const": "BAN"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "options": {
+                "properties": {
+                  "target": {
+                    "default": "BOTH_SIDES"
+                  },
+                  "source": {
+                    "default": "POOL"
+                  },
+                  "visibility": {
+                    "not": {
+                      "const": "HIDDEN"
+                    }
+                  },
+                  "modifiers": {
+                    "items": {
+                      "not": {
+                        "enum": [
+                          "FIRST",
+                          "PROTECT"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "required": [
+        "playerSide",
+        "actionType",
+        "itemType"
+      ],
+      "properties": {
+        "playerSide": {
+          "$ref": "#/$defs/PlayerSide"
+        },
+        "actionType": {
+          "$ref": "#/$defs/ActionType"
+        },
+        "itemType": {
+          "$ref": "#/$defs/ItemType"
+        },
+        "count": {
+          "title": "count",
+          "description": "该步骤执行动作的次数。",
+          "default": 1,
+          "type": "integer",
+          "minimum": 1
+        },
+        "options": {
+          "title": "ActionOptions",
+          "description": "动作的可选配置。",
+          "type": "object",
+          "properties": {
+            "target": {
+              "$ref": "#/$defs/ActionTarget"
+            },
+            "source": {
+              "$ref": "#/$defs/ActionSource"
+            },
+            "visibility": {
+              "default": "PUBLIC",
+              "allOf": [
+                {
+                  "$ref": "#/$defs/Visibility"
+                }
+              ]
+            },
+            "modifiers": {
+              "default": [],
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Modifier"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "DraftRound": {
+      "title": "DraftRound",
+      "description": "征召流程回合，每个回合包含多个操作。",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DraftAction"
+      }
+    },
+    "DraftObject": {
+      "type": "object",
+      "required": [
+        "metadata",
+        "sequence"
+      ],
+      "properties": {
+        "metadata": {
+          "$ref": "https://seerbp.github.io/schemas/rulelike/shared/metadata"
+        },
+        "sequence": {
+          "title": "Sequence",
+          "description": "征召流程序列",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DraftRound"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "https://seerbp.github.io/schemas/rulelike/shared/metadata": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema#",
+      "$id": "https://seerbp.github.io/schemas/rulelike/shared/metadata",
+      "title": "RuleLikeMetadata",
+      "description": "规则类资源的元数据。",
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "description",
+        "author",
+        "sourceUri"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/Id"
+        },
+        "name": {
+          "title": "name",
+          "description": "名称",
+          "type": "string",
+          "maxLength": 16
+        },
+        "description": {
+          "title": "description",
+          "description": "介绍，可能为 `CommonMark` 格式",
+          "type": "string",
+          "maxLength": 100
+        },
+        "author": {
+          "$ref": "#/$defs/Author"
+        },
+        "tags": {
+          "title": "tags",
+          "description": "规则标签，用于分类和搜索。",
+          "type": "array",
+          "maxItems": 5,
+          "items": {
+            "$ref": "#/$defs/Tag"
+          }
+        },
+        "sourceUri": {
+          "title": "source_uri",
+          "description": "规则源代码的可访问 URI。",
+          "type": "string",
+          "format": "uri"
+        }
+      },
+      "$defs": {
+        "Id": {
+          "title": "id",
+          "description": "规则 ID，必须为正整数。",
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "format": "int32"
+        },
+        "Author": {
+          "title": "author",
+          "description": "规则作者信息",
+          "type": "object",
+          "required": [
+            "name",
+            "link"
+          ],
+          "properties": {
+            "name": {
+              "title": "name",
+              "description": "作者名称",
+              "type": "string"
+            },
+            "link": {
+              "title": "link",
+              "description": "作者联系方式链接，可以是邮箱、QQ链接，社交媒体主页等。",
+              "type": "string"
+            }
+          }
+        },
+        "Tag": {
+          "title": "tag",
+          "description": "规则标签，用于分类和搜索。",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
