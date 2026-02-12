@@ -45,7 +45,7 @@
       "title": "ItemType",
       "description": "项目类型。",
       "type": "string",
-      "enum": [ "PET", "SUIT", "TITLE" ]
+      "enum": [ "PET", "SUIT", "EQUIPMENT", "TITLE" ]
     },
     "DraftAction": {
       "title": "DraftAction",
@@ -65,13 +65,11 @@
               "options": {
                 "properties": {
                   "target": {
-                    "default": "ONLY_SELF",
                     "not": {
-                      "const": "ONLY_OPPONENT"
+                      "const": "BOTH_SIDES"
                     }
                   },
                   "source": {
-                    "default": "POOL",
                     "const": "POOL"
                   }
                 }
@@ -91,12 +89,6 @@
             "properties": {
               "options": {
                 "properties": {
-                  "target": {
-                    "default": "BOTH_SIDES"
-                  },
-                  "source": {
-                    "default": "POOL"
-                  },
                   "visibility": {
                     "not": {
                       "const": "HIDDEN"
