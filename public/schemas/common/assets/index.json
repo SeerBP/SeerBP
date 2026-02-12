@@ -5,7 +5,7 @@
   "description": "各种资产的 JSON Schema 定义",
   "$defs": {
     "EquipmentType": {
-      "description": "装备类型",
+      "description": "装备部件类型",
       "type": "string",
       "enum": [ "HEAD", "EYE", "WAYST", "HAND", "FOOT" ]
     },
@@ -36,11 +36,15 @@
           "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/EquipId"
         },
         "name": {
-          "description": "装备名称",
+          "description": "装备部件名称",
           "type": "string"
         },
         "type": {
           "$ref": "#/$defs/EquipmentType"
+        },
+        "description": {
+          "description": "装备部件描述",
+          "type": "string"
         }
       },
       "additionalProperties": false
