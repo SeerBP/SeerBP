@@ -1,7 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
   "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/draft",
-  "title": "Draft",
   "description": "征召流程相关的 JSON Schema 定义",
   "$ref": "#/$defs/DraftObject",
   "$defs": {
@@ -54,6 +53,7 @@
       "allOf": [
         {
           "if": {
+            "required": [ "actionType" ],
             "properties": {
               "actionType": {
                 "const": "PICK"
@@ -61,8 +61,10 @@
             }
           },
           "then": {
+            "required": [ "options" ],
             "properties": {
               "options": {
+                "required": [ "source" ],
                 "properties": {
                   "target": {
                     "not": {
@@ -79,6 +81,7 @@
         },
         {
           "if": {
+            "required": [ "actionType" ],
             "properties": {
               "actionType": {
                 "const": "BAN"
@@ -166,6 +169,7 @@
       }
     },
     "DraftObject": {
+      "title": "DraftObject",
       "type": "object",
       "required": [ "metadata", "sequence" ],
       "properties": {

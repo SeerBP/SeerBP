@@ -1,6 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
   "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/fight",
+  "description": "对战规则相关的 JSON Schema 定义",
   "$ref": "#/$defs/FightObject",
   "$defs": {
     "ItemId": {

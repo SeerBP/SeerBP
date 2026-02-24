@@ -4,10 +4,31 @@
   "title": "Assets Schemas",
   "description": "各种资产的 JSON Schema 定义",
   "$defs": {
-    "EquipmentType": {
-      "description": "装备部件类型",
-      "type": "string",
-      "enum": [ "HEAD", "EYE", "WAYST", "HAND", "FOOT" ]
+    "ElementType": {
+      "description": "精灵属性类型",
+      "type": "object",
+      "required": [ "id", "name", "is_double", "related_ids" ],
+      "properties": {
+        "id": {
+          "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/ElementTypeId"
+        },
+        "name": {
+          "description": "精灵属性名称",
+          "type": "string"
+        },
+        "is_double": {
+          "description": "是否为双属性",
+          "type": "boolean"
+        },
+        "related_ids": {
+          "description": "相关属性ID列表",
+          "type": "array",
+          "items": {
+            "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/ElementTypeId"
+          }
+        }
+      },
+      "additionalProperties": false
     },
     "PetData": {
       "description": "精灵数据",
@@ -26,6 +47,11 @@
         }
       },
       "additionalProperties": false
+    },
+    "EquipmentType": {
+      "description": "装备部件类型",
+      "type": "string",
+      "enum": [ "HEAD", "EYE", "WAYST", "HAND", "FOOT" ]
     },
     "EquipmentData": {
       "description": "装备数据",

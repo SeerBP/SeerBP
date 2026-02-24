@@ -1,7 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
   "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/pool",
-  "title": "PetPool Schemas",
   "description": "精灵池相关的 JSON Schema 定义",
   "$ref": "#/$defs/PetPoolObject",
   "$defs": {
@@ -69,7 +68,7 @@
       "type": "boolean"
     },
     "PetPoolObject": {
-      "title": "PetPoolObject",
+      "title": "PoolObject",
       "description": "PetPoolObject 表示一个精灵池资源",
       "type": "object",
       "allOf": [
@@ -84,10 +83,17 @@
           },
           "then": {
             "not": {
-              "required": [ "pointsLimit", "allowUnlisted" ]
+              "anyOf": [
+                {
+                  "required": [ "pointsLimit" ]
+                },
+                {
+                  "required": [ "allowUnlisted" ]
+                }
+              ]
             },
             "properties": {
-              "petPool": {
+              "pools": {
                 "items": {
                   "required": [ "count" ],
                   "properties": {
@@ -115,7 +121,7 @@
             },
             "required": [ "pointsLimit" ],
             "properties": {
-              "petPool": {
+              "pools": {
                 "items": {
                   "required": [ "count" ]
                 }
@@ -134,10 +140,17 @@
           },
           "then": {
             "not": {
-              "required": [ "pointsLimit", "fallbackCount" ]
+              "anyOf": [
+                {
+                  "required": [ "pointsLimit" ]
+                },
+                {
+                  "required": [ "fallbackCount" ]
+                }
+              ]
             },
             "properties": {
-              "petPool": {
+              "pools": {
                 "items": {
                   "not": {
                     "required": [ "count" ]
