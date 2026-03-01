@@ -78,7 +78,7 @@
     "TitleData": {
       "description": "称号数据",
       "type": "object",
-      "required": [ "id", "name", "description" ],
+      "required": [ "id", "name", "description", "attr_total" ],
       "properties": {
         "id": {
           "$ref": "https://seerbp.github.io/SeerBP/schemas/common/asset_identifiers#/$defs/TitleId"
@@ -90,6 +90,10 @@
         "description": {
           "description": "称号描述",
           "type": "string"
+        },
+        "attr_total": {
+          "description": "称号属性加成值总和",
+          "type": "integer"
         }
       },
       "additionalProperties": false

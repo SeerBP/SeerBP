@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema#",
   "$id": "https://seerbp.github.io/SeerBP/schemas/rulelike/pool",
-  "description": "精灵池相关的 JSON Schema 定义",
-  "$ref": "#/$defs/PetPoolObject",
+  "description": "池相关的 JSON Schema 定义",
+  "$ref": "#/$defs/PoolObject",
   "$defs": {
     "PoolType": {
       "title": "PoolType",
@@ -10,32 +10,41 @@
       "type": "string",
       "enum": [ "NONE", "LIMIT", "POINTS" ]
     },
+    "ItemType": {
+      "title": "ItemType",
+      "description": "ItemType 表示 SubPool 中的物品类型",
+      "type": "string",
+      "enum": [ "PET", "SUIT", "EQUIPMENT", "TITLE" ]
+    },
     "SubPool": {
       "title": "SubPool",
-      "description": "SubPool 表示一个子池，完整的精灵池是由若干个 SubPool 数组构成的",
+      "description": "SubPool 表示一个子池，完整的池规则是由若干个 SubPool 数组构成的",
       "type": "object",
-      "required": [ "pets" ],
+      "required": [ "contents", "itemType" ],
       "properties": {
-        "pets": {
-          "title": "pets",
+        "contents": {
+          "title": "contents",
           "description": "子池的内容",
           "type": "array",
           "items": {
-            "$ref": "#/$defs/PetItem"
+            "$ref": "#/$defs/Item"
           }
         },
         "count": {
           "title": "count",
-          "description": "对于限制池，这个字段决定了限制数量，对于奖励池则是表示额外积分数量。\n 当池为奖励池时，这个字段的值可能是负数，可用于限制过强的精灵",
+          "description": "对于限制池，这个字段决定了限制数量，对于积分池则是表示内容的积分数量。\n 当池为积分池时，这个字段的值可以是负数，可用于限制过强的物品",
           "type": "integer",
           "format": "int32"
+        },
+        "itemType": {
+          "$ref": "#/$defs/ItemType"
         }
       },
       "additionalProperties": false
     },
-    "PetItem": {
-      "title": "PetItem",
-      "description": "PetItem 表示一个 SubPool 中的内容",
+    "Item": {
+      "title": "Item",
+      "description": "Item 表示一个 SubPool 中的内容",
       "type": "object",
       "required": [ "id" ],
       "properties": {
@@ -48,7 +57,7 @@
         },
         "endId": {
           "title": "end_id",
-          "description": "当该字段存在时，该 PetItem 表示一个 ID 范围，范围为 [id, endId]",
+          "description": "当该字段存在时，该对象表示一个 ID 范围，范围为 [id, endId]",
           "type": "integer",
           "exclusiveMinimum": 0,
           "format": "int32"
@@ -58,18 +67,53 @@
     },
     "FallbackCount": {
       "title": "FallbackCount",
-      "description": "未在子池中明确列出的精灵所使用的默认计数值。在限制模式 (LIMIT) 下表示默认限制数量，在积分模式 (POINTS) 下表示默认积分值。此字段含义与 SubPool 中的 count 字段相同。仅在类型不为 NONE 时生效。",
+      "description": "未在子池中明确列出的物品所使用的默认计数值。在限制模式 (LIMIT) 下表示默认限制数量，在积分模式 (POINTS) 下表示默认积分值。此字段含义与 SubPool 中的 count 字段相同。仅在类型不为 NONE 时生效。",
       "type": "integer",
       "format": "int32"
     },
+    "FallbackCounts": {
+      "title": "FallbackCounts",
+      "description": "按物品类型设置的 fallback 计数值映射。仅在类型不为 NONE 时生效。",
+      "type": "object",
+      "properties": {
+        "PET": {
+          "$ref": "#/$defs/FallbackCount"
+        },
+        "SUIT": {
+          "$ref": "#/$defs/FallbackCount"
+        },
+        "EQUIPMENT": {
+          "$ref": "#/$defs/FallbackCount"
+        },
+        "TITLE": {
+          "$ref": "#/$defs/FallbackCount"
+        }
+      },
+      "additionalProperties": false
+    },
     "AllowUnlisted": {
       "title": "AllowUnlisted",
-      "description": "是否允许选择未在任何子池中定义的精灵。仅在类型为 NONE 时生效。",
-      "type": "boolean"
+      "description": "按物品类型标记该类型的所有物品均可选择（仅受 allowDuplicate 约束）。设置了此标记的类型不得在 pools 中定义对应的子池。仅在类型为 NONE 时生效。",
+      "type": "object",
+      "properties": {
+        "PET": {
+          "type": "boolean"
+        },
+        "SUIT": {
+          "type": "boolean"
+        },
+        "EQUIPMENT": {
+          "type": "boolean"
+        },
+        "TITLE": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
     },
-    "PetPoolObject": {
+    "PoolObject": {
       "title": "PoolObject",
-      "description": "PetPoolObject 表示一个精灵池资源",
+      "description": "PoolObject 表示一个池规则资源",
       "type": "object",
       "allOf": [
         {
@@ -145,7 +189,7 @@
                   "required": [ "pointsLimit" ]
                 },
                 {
-                  "required": [ "fallbackCount" ]
+                  "required": [ "fallbackCounts" ]
                 }
               ]
             },
@@ -154,6 +198,130 @@
                 "items": {
                   "not": {
                     "required": [ "count" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [ "allowUnlisted" ],
+            "properties": {
+              "allowUnlisted": {
+                "required": [ "PET" ],
+                "properties": {
+                  "PET": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "pools": {
+                "items": {
+                  "not": {
+                    "required": [ "itemType" ],
+                    "properties": {
+                      "itemType": {
+                        "const": "PET"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [ "allowUnlisted" ],
+            "properties": {
+              "allowUnlisted": {
+                "required": [ "SUIT" ],
+                "properties": {
+                  "SUIT": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "pools": {
+                "items": {
+                  "not": {
+                    "required": [ "itemType" ],
+                    "properties": {
+                      "itemType": {
+                        "const": "SUIT"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [ "allowUnlisted" ],
+            "properties": {
+              "allowUnlisted": {
+                "required": [ "EQUIPMENT" ],
+                "properties": {
+                  "EQUIPMENT": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "pools": {
+                "items": {
+                  "not": {
+                    "required": [ "itemType" ],
+                    "properties": {
+                      "itemType": {
+                        "const": "EQUIPMENT"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [ "allowUnlisted" ],
+            "properties": {
+              "allowUnlisted": {
+                "required": [ "TITLE" ],
+                "properties": {
+                  "TITLE": {
+                    "const": true
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "pools": {
+                "items": {
+                  "not": {
+                    "required": [ "itemType" ],
+                    "properties": {
+                      "itemType": {
+                        "const": "TITLE"
+                      }
+                    }
                   }
                 }
               }
@@ -168,7 +336,7 @@
         },
         "pools": {
           "title": "pools",
-          "description": "精灵池内容",
+          "description": "池内容",
           "type": "array",
           "items": {
             "$ref": "#/$defs/SubPool"
@@ -176,7 +344,7 @@
         },
         "type": {
           "title": "type",
-          "description": "精灵池类型",
+          "description": "池类型",
           "allOf": [
             {
               "$ref": "#/$defs/PoolType"
@@ -185,17 +353,17 @@
         },
         "pointsLimit": {
           "title": "points_limit",
-          "description": "精灵池的积分上限，当所选精灵积分超过该值时，验证失败。该字段仅在精灵池类型为 POINTS 时生效",
+          "description": "池规则的积分上限，当所选物品积分超过该值时，验证失败。该字段仅在池类型为 POINTS 时生效",
           "type": "integer",
           "format": "int32"
         },
         "allowDuplicate": {
           "title": "allow_duplicate",
-          "description": "是否允许选择同一精灵多次",
+          "description": "是否允许选择同一物品多次",
           "type": "boolean"
         },
-        "fallbackCount": {
-          "$ref": "#/$defs/FallbackCount"
+        "fallbackCounts": {
+          "$ref": "#/$defs/FallbackCounts"
         },
         "allowUnlisted": {
           "$ref": "#/$defs/AllowUnlisted"
